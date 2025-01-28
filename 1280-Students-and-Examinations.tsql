@@ -1,0 +1,10 @@
+
+select  s.student_id ,s.student_name, SB.subject_name,Count(s.student_id) AS attended_exams from Students s right outer join Examinations e on s.student_id=e.student_id
+inner join subjects sb on e.subject_name=sb.subject_name
+group by s.student_id,s.student_name ,sb.subject_name
+union
+select  s.student_id ,student_name,SB.subject_name, 0 AS attended_exams from  SUBJECTS SB,
+Students s 
+EXCEPT
+select  s.student_id ,student_name,E.subject_name , 0 AS attended_exams from  Students s   INNER JOIN 
+Examinations e on s.student_id=e.student_id
