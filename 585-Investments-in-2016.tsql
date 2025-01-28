@@ -1,0 +1,10 @@
+/* Write your T-SQL query statement below */
+with temp as(select tiv_2015 as t from Insurance  group by tiv_2015 having count(tiv_2015)>1)
+
+select round(sum(tiv_2016),2) as tiv_2016 from Insurance inner join temp on tiv_2015=t 
+WHERE CONCAT(lat ,' ',lon) IN (
+    SELECT CONCAT(lat ,' ',lon)
+    FROM Insurance
+    GROUP BY CONCAT(lat ,' ',lon)
+    HAVING COUNT(*) = 1
+);
