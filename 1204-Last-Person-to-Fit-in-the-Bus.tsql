@@ -1,0 +1,17 @@
+/* Write your T-SQL query statement below */
+WITH CumulativeSum AS (
+    SELECT 
+        turn,
+        weight,
+        SUM(weight) OVER (ORDER BY turn) AS running_sum
+    FROM Queue
+)
+
+SELECT q.person_name
+FROM queue q
+INNER JOIN (
+    SELECT MAX(turn) AS max_turn
+    FROM CumulativeSum
+    WHERE running_sum <= 1000
+) AS SubQuery
+ON q.turn = SubQuery.max_turn;
