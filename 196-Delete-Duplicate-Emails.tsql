@@ -1,0 +1,9 @@
+WITH d AS (
+    SELECT email, MIN(id) AS min_id
+    FROM person
+    GROUP BY email
+    HAVING COUNT(email) > 1
+)
+DELETE FROM person
+WHERE email IN (SELECT email FROM d)
+AND id NOT IN (SELECT min_id FROM d);
