@@ -1,0 +1,4 @@
+/* Write your T-SQL query statement below */
+select num as ConsecutiveNums from (
+select num, lag(num) OVER(ORDER BY id) as prev_num,  LAG(num, 2) OVER (ORDER BY id) AS prev_num_2 from logs) as sub  WHERE num = prev_num AND num = prev_num_2 group by num 
+--select num, lag(num) OVER(ORDER BY id) as l from logs
