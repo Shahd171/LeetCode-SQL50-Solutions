@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below 
+select p.product_id ,Coalesce(round(cast(sum(Coalesce(units,0)*p.price) as float ) /cast (sum(units)as float),2),0)
+as average_price  from Prices p full outer join UnitsSold u
+on p. product_id=u. product_id 
+where u.purchase_date between p.start_date and p.end_date
+group by p.product_id*/
+
+select p.product_id, Coalesce(round(cast(sum(Coalesce(units,0)*p.price) as float ) /cast (sum(units)as float),2),0) as average_price from Prices p full outer join UnitsSold u
+on p. product_id=u. product_id 
+
+where  u.purchase_date between p.start_date and p.end_date  or  u.purchase_date  is null
+group by p.product_id
