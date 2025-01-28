@@ -1,0 +1,8 @@
+/* Write your T-SQL query statement below */
+with rank_ as (select  *,  DENSE_RANK() OVER ( ORDER BY salary DESC) AS rankNumber from Employee
+)
+
+SELECT top(1) IIF((select NULLIF(count(id), 0) from rank_)<2 or count(id)=0  , (select null),(select top(1) salary from rank_ where rankNumber=2) ) as  SecondHighestSalary from rank_ 
+
+--select count(id) from rank_
+--select NULLIF(count(id), 0)from rank_
