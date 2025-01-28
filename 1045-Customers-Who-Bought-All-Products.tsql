@@ -1,0 +1,3 @@
+select sub.customer_id  from(
+select customer_id, count(distinct(product_key)) as c  from Customer c  group by customer_id) as sub 
+where sub.c= (select count(product_key) from Product )
