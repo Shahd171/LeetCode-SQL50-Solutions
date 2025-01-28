@@ -1,0 +1,17 @@
+/* Write your T-SQL query statement below */
+SELECT 
+    round(COUNT(CASE WHEN order_date = customer_pref_delivery_date THEN 1 ELSE NULL END) * 1.0 / COUNT(delivery_id)*100,2) AS immediate_percentage
+FROM 
+    Delivery
+WHERE 
+    delivery_id IN (
+        SELECT delivery_id
+        FROM (
+            SELECT 
+                delivery_id, 
+                ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date) AS row_num
+            FROM Delivery
+        ) AS ranked_deliveries
+        WHERE row_num = 1
+    );
+
