@@ -1,0 +1,9 @@
+/* Write your T-SQL query statement below */
+SELECT  d.name AS Department,e.name as Employee , e.salary as Salary
+FROM (
+    SELECT *, 
+           DENSE_RANK() OVER (PARTITION BY departmentId ORDER BY salary DESC) AS rn 
+    FROM Employee
+) AS e
+INNER JOIN Department d ON e.departmentId = d.id
+WHERE e.rn < 4;
