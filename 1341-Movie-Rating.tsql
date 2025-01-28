@@ -1,0 +1,28 @@
+WITH t AS (
+    SELECT TOP (1) u.name AS results
+    FROM MovieRating m
+    INNER JOIN Users u ON u.user_id = m.user_id
+    GROUP BY u.name
+    ORDER BY COUNT(m.movie_id) DESC, u.name ASC
+),
+t2 AS (
+    SELECT TOP (1) m.title AS results
+    FROM MovieRating mr
+    INNER JOIN Movies m ON m.movie_id = mr.movie_id
+    WHERE mr.created_at >= '2020-02-01' AND mr.created_at < '2020-03-01'
+    GROUP BY m.title
+    ORDER BY sum(mr.rating)/cast(count(mr.rating) as float) DESC, m.title ASC
+)
+--   SELECT  m.title AS results,sum(mr.rating)/cast(count(mr.rating) as float)
+--     FROM MovieRating mr
+--     INNER JOIN Movies m ON m.movie_id = mr.movie_id
+--     WHERE mr.created_at >= '2020-02-01' AND mr.created_at < '2020-03-01'
+--     GROUP BY m.title
+--     ORDER BY AVG(mr.rating) DESC, m.title ASC
+SELECT results
+FROM t
+
+UNION ALL
+
+SELECT results
+FROM t2;
